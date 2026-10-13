@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="color-scheme" content="dark" />
+<title>Mistérios da Matemática Antiga • Capítulo Egito</title>
+<style>
+:root{--ink:#08262b;--ink2:#102e34;--gold:#f6d18d;--gold2:#bc853e;--white:#fff5dc;--green:#2e9e77}
+*{box-sizing:border-box}
+body{margin:0;min-height:100dvh;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse at 50% 20%,#1e4449 0%,#08141e 69%,#04090d 100%);font-family:Georgia,'Times New Roman',serif;color:var(--white)}
+button,input,textarea{font:inherit}
+button{cursor:pointer}
+#shell{width:100%;min-height:100dvh;display:flex;align-items:center;justify-content:center;padding:clamp(0px,.5vw,10px)}
+#stage{position:relative;width:min(99vw,calc(95dvh * 1672 / 941));aspect-ratio:1672 / 941;max-width:1780px;background:#bb9465;border:2px solid #d5a865;border-radius:8px;overflow:hidden;box-shadow:0 15px 65px #000b,isolate}
+#scene-image{display:block;width:100%;height:100%;object-fit:fill;user-select:none;-webkit-user-drag:none}
+.hit{position:absolute;transform:translate(-50%,-50%);border:0;border-radius:999px;background:transparent;outline:0;min-width:25px;min-height:25px;z-index:3}
+.hit:focus-visible,.ui-hit:focus-visible,.top-action:focus-visible{outline:3px solid #fffcb6;outline-offset:3px}
+.hit::after{content:"";position:absolute;inset:4px;border:2px solid transparent;border-radius:50%;transition:all .15s ease}
+.hit:hover::after,.hit:focus-visible::after{border-color:#ffe0a0;box-shadow:0 0 12px 4px #e59b3d77;background:#ffc44e24}
+.hit.glow::after{content:"⌕";color:#fff3bf;text-align:center;font:23px/22px Arial,sans-serif;width:24px;height:24px;inset:auto;left:50%;top:50%;transform:translate(-50%,-50%);border:2px solid #ffdb78;background:#6a410a92;box-shadow:0 0 8px 3px #ffd45b9c,0 0 20px 5px #f8ba3b66;animation:cluePulse 2s ease-in-out infinite}
+.hit.glow:hover::after{background:#ffc54e88;border-color:#fff0b2}
+@keyframes cluePulse{0%,100%{box-shadow:0 0 6px 2px #ffca5f8f,0 0 14px 4px #ffc94a4d;transform:translate(-50%,-50%) scale(.87)}50%{box-shadow:0 0 10px 4px #ffe5aaca,0 0 24px 7px #ffd36a88;transform:translate(-50%,-50%) scale(1.08)}}
+.hit.found::before{content:"✓";font-size:clamp(10px,1.6vw,23px);position:absolute;right:-4px;top:-8px;color:#fff9d5;background:#176a50;border:1.5px solid #e1bb72;border-radius:50%;width:clamp(15px,2vw,29px);height:clamp(15px,2vw,29px);display:grid;place-items:center;box-shadow:0 2px 10px #0006}
+.ui-hit{position:absolute;z-index:4;background:transparent;border:2px solid transparent;border-radius:18px}
+.ui-hit:hover{border-color:#ffe1a4;box-shadow:inset 0 0 12px #fff4a91a}
+#progress{position:absolute;right:1.7%;top:2.5%;z-index:4;display:flex;align-items:center;gap:7px;white-space:nowrap;background:#092b35da;color:#f8deb2;border:1px solid #d8ac64;border-radius:999px;padding:7px 14px;letter-spacing:.04em;font:600 clamp(10px,1.1vw,15px) system-ui,sans-serif;box-shadow:0 2px 6px #0006}
+#help-button{position:absolute;right:1.7%;top:9%;z-index:4;background:#102e39d9;border:1px solid #cfac70;color:#ffe4b2;border-radius:20px;padding:7px 13px;font:600 clamp(10px,1vw,13px) system-ui,sans-serif}
+#picked{position:absolute;left:2%;bottom:2.5%;z-index:4;background:#103d3ee8;border:1px solid #cead70;box-shadow:0 2px 8px #0007;border-radius:20px;padding:6px 12px;font:600 clamp(10px,1vw,13px) system-ui,sans-serif}
+#toast{position:absolute;z-index:15;top:16%;left:50%;transform:translateX(-50%) translateY(-12px);pointer-events:none;opacity:0;max-width: min(76%,660px);text-align:center;background:#112e32f2;border:1px solid #d4a75e;color:#fef1d5;border-radius:13px;padding:12px 18px;box-shadow:0 8px 30px #000a;transition:opacity .22s,transform .22s;font:500 clamp(12px,1.35vw,17px) system-ui,sans-serif}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+#screen-shade{position:absolute;inset:0;z-index:10;background:#07171cc7;display:none;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(4px)}
+#screen-shade.visible{display:flex}
+.panel{position:relative;width:min(94%,680px);max-height:min(90%,820px);overflow-y:auto;border:3px solid #bc8e42;border-radius:20px;background:linear-gradient(160deg,#13353a,#0b262d 72%);box-shadow:inset 0 0 0 1px #fce4a04f,0 22px 60px #000d;padding:clamp(19px,3vw,36px);text-align:left}
+.panel h1{font-size:clamp(25px,3vw,40px);color:#ffe2a6;margin:0 32px 12px 0;line-height:1.15}
+.panel h2{font-size:clamp(22px,2.5vw,33px);color:#ffdfa0;margin:0 27px 10px 0}
+.panel p{font:400 clamp(14px,1.45vw,18px)/1.55 system-ui,sans-serif;margin:9px 0;color:#f1f1e8}
+.panel strong{color:#ffe3ad}
+.subtle{color:#b9d6d5 !important;font-size:clamp(12px,1.15vw,15px) !important}
+.close{position:absolute;top:13px;right:13px;border:1px solid #bd9958;background:#22464a;color:#fff1cd;border-radius:50%;width:36px;height:36px;font:22px system-ui,sans-serif}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+.primary,.secondary{padding:11px 17px;border-radius:12px;font:700 clamp(13px,1.3vw,16px) system-ui,sans-serif}
+.primary{background:linear-gradient(#ebc67a,#b57c30);color:#162a31;border:2px solid #ffdaa0}
+.secondary{background:#244c53;color:#f5e5cc;border:1px solid #c39d5c}
+.primary:hover,.secondary:hover{filter:brightness(1.12)}
+.tool-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:19px}
+.tool{border:2px solid #b78b50;background:#193c41;border-radius:13px;color:#fff4dd;min-height:147px;padding:15px 10px;text-align:center;display:flex;flex-direction:column;gap:9px;align-items:center}
+.tool.selected{border-color:#8fe5be;background:#235e56}
+.tool-symbol{font-size:clamp(27px,3.5vw,42px);line-height:1}
+.tool strong{font:700 clamp(12px,1.45vw,16px) system-ui,sans-serif}
+.tool span:last-child{font:400 clamp(11px,1.08vw,14px)/1.35 system-ui,sans-serif;color:#d7e0db}
+.clues{margin:10px 0 16px;padding:0;display:grid;gap:8px;list-style:none}
+.clues li{border:1px solid #7a846e77;border-radius:10px;background:#254347b0;padding:10px 12px;font:500 clamp(13px,1.22vw,16px) system-ui,sans-serif;display:flex;justify-content:space-between;gap:12px}
+.clues li span:last-child{font-weight:700;white-space:nowrap;color:#ffe0a4}
+.clues li.missing{opacity:.7}
+textarea,input[type="text"]{width:100%;border:2px solid #9b875d;border-radius:11px;background:#fef2d8;color:#142a2f;padding:12px;font:500 17px system-ui,sans-serif}
+textarea{min-height:80px;resize:vertical}
+label.field{display:block;margin:15px 0 7px;font:600 15px system-ui,sans-serif;color:#f7e5ba}
+.radio-line{display:flex;align-items:center;gap:9px;margin:12px 0;font:500 15px system-ui,sans-serif}
+.radio-line input{accent-color:#c99c54}
+.alert{margin-top:15px;background:#6b2a29;border:1px solid #d38b6c;padding:12px;border-radius:10px;font:500 14px/1.4 system-ui,sans-serif}
+.success-symbol{font-size:50px;text-align:center;margin-bottom:10px}
+.pill{display:inline-block;border:1px solid #ad8e55;color:#f9dfad;border-radius:20px;padding:5px 10px;font:600 12px system-ui,sans-serif;margin-bottom:13px}
+.math{font-family:'Times New Roman',serif;font-size:clamp(19px,2.2vw,27px);color:#ffeabf;background:#234b50;border-radius:10px;padding:14px 17px;text-align:center;margin:16px 0}
+#footer{position:fixed;left:10px;bottom:6px;font:11px system-ui,sans-serif;color:#aec5c9a6;pointer-events:none}
+@media(max-width:700px){#stage{width:100%;border-radius:0}#shell{padding:0}.panel{width:98%;padding:17px}.tool-grid{gap:5px}.tool{min-height:115px;padding:8px 3px}#help-button{top:13%}#picked{display:none}.ui-hit{border-radius:7px}#toast{max-width:90%;top:20%}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div id="shell"><main id="stage" aria-label="Mistérios da Matemática Antiga, capítulo Egito">
+<img id="scene-image" src="/assets/scenes/egito_1.webp" alt="Cenário ilustrado de medição no Egito antigo" draggable="false" />
+<div id="spots"></div><div id="clickable-ui"></div>
+<div id="progress">✦ <span id="progress-text">Pistas 0/3</span></div>
+<button id="help-button" type="button" onclick="showHint()">? Dica</button>
+<div id="picked" hidden></div><div id="toast" role="status" aria-live="polite"></div>
+<div id="screen-shade" class="visible" aria-live="polite"><div id="modal" class="panel" role="dialog" aria-modal="true" aria-label="Janela da atividade"></div></div>
+</main></div>
+<div id="footer">Egito • Duas missões de investigação matemática</div>
+<script>
+'use strict';
+const STORE_KEY='mma_egito_2_missoes_2026_v1';
+const TOOL_INFO={
+  lupa:{name:'Lupa',icon:'🔎',desc:'Examine inscrições, instrumentos e detalhes. Descobre o que merece atenção.'},
+  regua:{name:'Régua',icon:'📏',desc:'Meça a altura de hastes e sombras pequenas.'},
+  corda:{name:'Corda',icon:'🪢',desc:'Meça distâncias maiores, como sombras extensas e a base de construções.'}
+};
+const MISSIONS=[
+ {title:'A altura do marco',image:'/assets/scenes/egito_1.webp',clueCount:3,answer:4,overview:'Um marco precisa ter sua altura determinada sem que ninguém suba nele. Investigue uma haste de referência e as sombras projetadas no mesmo instante.',
+  historic:'A observação de sombras e o uso de instrumentos de medida são pontos de partida para discutir proporcionalidade. Os valores desta atividade são fictícios.',
+  clues:[
+    {id:'altura_haste',label:'Altura da haste',value:'2 m',x:36.2,y:52,tool:'regua',text:'A haste mede 2 metros de altura.'},
+    {id:'sombra_haste',label:'Sombra da haste',value:'1,5 m',x:46.9,y:68.5,tool:'regua',text:'A sombra da haste mede 1,5 metro.'},
+    {id:'sombra_marco',label:'Sombra do marco',value:'3 m',x:75.7,y:68.0,tool:'corda',text:'A sombra do marco mede 3 metros.'}
+  ],
+  extras:[
+    {id:'escriba',x:13.5,y:48.5,text:'O escriba observa os objetos verticais e percebe que suas sombras foram projetadas no mesmo instante. Que grandeza ainda precisamos descobrir?'},
+    {id:'marco',x:72,y:35,text:'Este marco não pode ser medido diretamente. Mas sua sombra está ao alcance dos medidores!'}
+  ],
+  tips:['Experimente examinar o escriba e os pontos dourados. Abra a Mochila para selecionar um instrumento.', 'O comprimento da sombra pode ser comparado com a altura da haste. Use a mesma razão para o marco.', 'Monte a proporção: 2 ÷ 1,5 = h ÷ 3.'],
+  explanation:'Como as alturas e sombras formam triângulos semelhantes, 2 / 1,5 = h / 3. Portanto, h = (2 × 3) / 1,5 = 4 m.'},
+ {title:'O mistério da pirâmide',image:'/assets/scenes/egito_2.webp',clueCount:4,answer:37.5,overview:'O arquiteto precisa determinar a altura de uma pirâmide de base quadrada. A sombra ultrapassa a borda da construção; descubra por que isso muda o cálculo.',
+  historic:'Nesta reconstrução didática, o topo da pirâmide está sobre o centro da base. A distância do centro à borda, somada à sombra externa, forma o cateto horizontal do triângulo maior.',
+  clues:[
+    {id:'altura_haste',label:'Altura da haste',value:'1,5 m',x:25.9,y:65.3,tool:'regua',text:'A haste de referência mede 1,5 metro.'},
+    {id:'sombra_haste',label:'Sombra da haste',value:'1,2 m',x:37.8,y:80.7,tool:'regua',text:'A sombra da haste mede 1,2 metro.'},
+    {id:'lado_base',label:'Lado da base quadrada',value:'24 m',x:47.8,y:53.2,tool:'corda',text:'O lado da base quadrada da pirâmide mede 24 metros.'},
+    {id:'sombra_externa',label:'Sombra além da borda',value:'18 m',x:88.4,y:61.5,tool:'corda',text:'A sombra se estende 18 metros além da borda da pirâmide.'}
+  ],
+  extras:[{id:'arquiteto',x:10.5,y:58,text:'O arquiteto explicou: o topo está alinhado verticalmente com o centro da base quadrada. Para alcançar a ponta da sombra, comece a medir no centro, não na borda.'},
+          {id:'pir',x:35,y:23,text:'O topo da pirâmide fica sobre o centro da base, mas o desenho é visto em perspectiva. Pense na distância horizontal em planta.'}],
+  tips:['Comece pelas medidas da haste e depois investigue a base e a sombra da pirâmide.', 'A sombra externa não é toda a distância desde o centro da base. Falta metade de um lado da base quadrada.', 'A distância horizontal total é 24/2 + 18 = 30 m; agora use 1,5/1,2 = h/30.'],
+  explanation:'A projeção do topo fica no centro da base. Assim, a distância horizontal é 24/2 + 18 = 30 m. Pela semelhança, 1,5/1,2 = h/30 e h = 37,5 m.'}
+];
+const defaultState=()=>({mission:0,status:'intro',found:[[],[]],tool:null,attempts:[0,0],tipCount:[0,0],notes:['','']});
+let S=defaultState();
+try{const saved=JSON.parse(localStorage.getItem(STORE_KEY)||'null');if(saved&&Array.isArray(saved.found)&&saved.found.length===2&&Number.isInteger(saved.mission)&&saved.mission>=0&&saved.mission<2){S={...defaultState(),...saved};if(S.status==='complete')S.status='complete';}}catch(_e){}
+let toastTimer;
+const el=id=>document.getElementById(id);
+const M=()=>MISSIONS[S.mission];
+const fmt=n=>String(n).replace('.',',');
+const countFound=()=>M().clues.filter(c=>S.found[S.mission].includes(c.id)).length;
+const requiredCount=()=>M().clues.length;
+const allFound=()=>countFound()===requiredCount();
+function save(){try{localStorage.setItem(STORE_KEY,JSON.stringify(S))}catch(_e){}}
+function toast(message){clearTimeout(toastTimer);const e=el('toast');e.textContent=message;e.classList.add('show');toastTimer=setTimeout(()=>e.classList.remove('show'),4100)}
+function closeModal(){el('screen-shade').classList.remove('visible');el('modal').innerHTML=''}
+function showModal(html,locked=false){el('screen-shade').classList.add('visible');el('modal').innerHTML=(locked?'':'<button type="button" class="close" onclick="closeModal()" aria-label="Fechar">×</button>')+html;const first=el('modal').querySelector('button:not(.close),input[type=text]');if(first)setTimeout(()=>first.focus(),80)}
+function showIntro(){S.status='intro';save();showModal(`<span class="pill">CAPÍTULO I • EGITO</span><h1>Mistérios da Matemática Antiga</h1><p><strong>Duas missões. Uma civilização para ajudar.</strong></p><p>Investigue os cenários, descubra medidas usando os instrumentos e resolva dois problemas de geometria do Ensino Médio.</p><p>Os <strong>valores são fictícios</strong> e as cenas são reconstruções didáticas inspiradas na Matemática do Egito Antigo.</p><p class="subtle">Esta sequência foi organizada para uso em um computador, com exploração local e sem internet.</p><div class="actions"><button class="primary" onclick="startGame()">▶ Começar a investigar</button><button class="secondary" onclick="resetGame()">Recomeçar do zero</button></div>`,true)}
+function resetGame(){S=defaultState();save();render();showIntro()}
+function startGame(){S.status='playing';S.tool=null;save();render();closeModal();toast('Comece abrindo a Mochila e examinando o cenário.');}
+function render(){
+ el('scene-image').src=M().image;
+ el('scene-image').alt='Egito — Missão '+(S.mission+1)+': '+M().title;
+ el('progress-text').textContent=`Missão ${S.mission+1}/2 • Pistas ${countFound()}/${requiredCount()}`;
+ el('picked').hidden=!S.tool;
+ if(S.tool){el('picked').textContent=TOOL_INFO[S.tool].icon+' '+TOOL_INFO[S.tool].name+' selecionada';}
+ const hotAreas=[...M().clues.map(c=>({...c,kind:'clue'})),...M().extras.map(c=>({...c,kind:'extra'}))];
+ el('spots').innerHTML=hotAreas.map(h=>`<button type="button" class="hit ${((S.mission===0 && h.id==='sombra_haste') || (S.mission===1 && h.id==='lado_base'))?'glow':''} ${h.kind==='clue'&&S.found[S.mission].includes(h.id)?'found':''}" data-spot="${h.id}" style="left:${h.x}%;top:${h.y}%;width:${h.kind==='extra'?6.2:7.2}%;height:10.5%" title="Investigar ponto do cenário" aria-label="Examinar parte do cenário"></button>`).join('');
+ for(const h of el('spots').querySelectorAll('[data-spot]'))h.addEventListener('click',()=>inspect(h.dataset.spot));
+ const positions=S.mission===0?{bag:{l:43.4,t:88.1,w:13.3,h:7.9},diary:{l:74.6,t:88,w:11.0,h:7.9},answer:{l:86.1,t:88,w:12.0,h:7.9}}:{bag:{l:67.9,t:89.6,w:9.4,h:7.0},diary:{l:77.7,t:89.6,w:8.7,h:7.0},answer:{l:87.4,t:89.6,w:11.2,h:7.0}};
+ el('clickable-ui').innerHTML=Object.entries(positions).map(([key,p])=>`<button type="button" class="ui-hit" data-ui="${key}" style="left:${p.l}%;top:${p.t}%;width:${p.w}%;height:${p.h}%" title="${key==='bag'?'Abrir Mochila':key==='diary'?'Abrir Diário':'Responder'}" aria-label="${key==='bag'?'Abrir Mochila':key==='diary'?'Abrir Diário':'Responder à missão'}"></button>`).join('');
+ for(const b of el('clickable-ui').querySelectorAll('button'))b.addEventListener('click',()=>({bag:openBag,diary:openDiary,answer:openAnswer}[b.dataset.ui]()));
+ el('help-button').disabled=S.status!=='playing';
+ if(S.status==='complete')showCompletion();
+}
+function openBag(){if(S.status!=='playing')return;const tiles=Object.entries(TOOL_INFO).map(([key,info])=>`<button type="button" class="tool ${S.tool===key?'selected':''}" onclick="selectTool('${key}')"><span class="tool-symbol">${info.icon}</span><strong>${info.name}</strong><span>${info.desc}</span></button>`).join('');showModal(`<span class="pill">INVENTÁRIO</span><h2>🎒 Sua mochila</h2><p>Selecione um instrumento e depois clique nos pontos de interesse da imagem.</p><div class="tool-grid">${tiles}</div><div class="actions"><button class="secondary" onclick="removeTool()">Guardar ferramenta</button></div>`)}
+function selectTool(t){S.tool=t;save();render();closeModal();toast(`${TOOL_INFO[t].name} selecionada. Clique em um objeto no cenário.`)}
+function removeTool(){S.tool=null;save();render();closeModal();toast('Ferramenta guardada. Abra a Mochila para selecionar outra.')}
+function inspect(id){if(S.status!=='playing')return;const clue=M().clues.find(c=>c.id===id), extra=M().extras.find(e=>e.id===id);
+ if(extra){toast(extra.text);return}
+ if(!clue)return;
+ if(S.found[S.mission].includes(clue.id)){toast(`${clue.label}: ${clue.value}. Informação já está no Diário.`);return}
+ if(!S.tool){toast('Abra a Mochila e escolha uma ferramenta antes de investigar.');return}
+ if(S.tool==='lupa'){toast('Você encontrou algo importante! Para medir, escolha '+TOOL_INFO[clue.tool].name.toLowerCase()+'.');return}
+ if(S.tool!==clue.tool){toast(`Esta ferramenta não é adequada aqui. Experimente a ${TOOL_INFO[clue.tool].name.toLowerCase()}.`);return}
+ S.found[S.mission].push(clue.id);save();render();toast(`✓ ${clue.label}: ${clue.value} • Registrado no Diário!`);
+ if(allFound())setTimeout(()=>{if(S.status==='playing')toast('Todas as pistas encontradas! Clique em Responder.')},2400)
+}
+function openDiary(){if(S.status!=='playing')return;const rows=M().clues.map(c=>{let found=S.found[S.mission].includes(c.id);return `<li class="${found?'':'missing'}"><span>${found?'✓':'◌'} ${c.label}</span><span>${found?c.value:'Não encontrada'}</span></li>`}).join('');showModal(`<span class="pill">REGISTROS • MISSÃO ${S.mission+1}</span><h2>📖 Diário de investigação</h2><p class="subtle">As medidas aparecem aqui depois que você as descobre com a ferramenta correta.</p><ul class="clues">${rows}</ul><label class="field" for="note">Anotações da equipe (opcional)</label><textarea id="note" placeholder="Ideias, hipóteses, contas..." oninput="saveNote(this.value)"></textarea><div class="actions"><button class="primary" onclick="closeModal()">Voltar ao cenário</button><button class="secondary" onclick="closeModal();openAnswer()">Tentar responder</button></div>`);el('note').value=S.notes[S.mission]||''}
+function saveNote(value){S.notes[S.mission]=value;save()}
+function openAnswer(){if(S.status!=='playing')return;
+ if(!allFound()){const missing=requiredCount()-countFound();showModal(`<h2>Faltam ${missing} ${missing===1?'pista':'pistas'}</h2><p>Antes de calcular, investigue a imagem com as ferramentas disponíveis. Você já encontrou <strong>${countFound()} de ${requiredCount()}</strong> medidas.</p><div class="actions"><button class="primary" onclick="closeModal();openBag()">Abrir Mochila</button><button class="secondary" onclick="closeModal()">Continuar investigando</button></div>`);return}
+ if(S.mission===0){showModal(`<span class="pill">DESAFIO MATEMÁTICO</span><h2>Qual é a altura do marco?</h2><p>Use as medidas encontradas no Diário para justificar a relação entre as alturas e as sombras.</p><label class="field" for="answer">Altura do marco (em metros)</label><input id="answer" type="text" inputmode="decimal" placeholder="Ex.: 4" autocomplete="off"><p><strong>Qual ideia matemática explica seu cálculo?</strong></p><label class="radio-line"><input type="radio" name="reason" value="soma"> Somar o comprimento das duas sombras</label><label class="radio-line"><input type="radio" name="reason" value="semelhanca"> Semelhança de triângulos e proporcionalidade</label><label class="radio-line"><input type="radio" name="reason" value="pitagoras"> Aplicar o Teorema de Pitágoras</label><div id="feedback"></div><div class="actions"><button class="primary" onclick="verifyAnswer()">Conferir resposta</button><button class="secondary" onclick="closeModal();openDiary()">Consultar diário</button></div>`)}
+ else {showModal(`<span class="pill">DESAFIO MATEMÁTICO</span><h2>O mistério da pirâmide</h2><p>Considere que o topo está alinhado com o <strong>centro da base quadrada</strong> e que o terreno é horizontal.</p><label class="field" for="distance">Distância horizontal do centro da base à ponta da sombra (m)</label><input id="distance" type="text" inputmode="decimal" placeholder="Primeiro calcule essa distância" autocomplete="off"><label class="field" for="answer">Altura da pirâmide (m)</label><input id="answer" type="text" inputmode="decimal" placeholder="Depois descubra a altura" autocomplete="off"><div id="feedback"></div><div class="actions"><button class="primary" onclick="verifyAnswer()">Conferir resposta</button><button class="secondary" onclick="closeModal();openDiary()">Consultar diário</button></div>`)} }
+function parseNum(v){if(typeof v!=='string')return NaN;const x=v.trim().replace(/\s/g,'').replace(',','.');if(!/^[-+]?\d+(\.\d+)?$/.test(x))return NaN;return Number(x)}
+function verifyAnswer(){const h=parseNum(el('answer')?.value||'');let ok=false;let msg='';
+ if(S.mission===0){const reason=el('modal').querySelector('input[name="reason"]:checked')?.value;ok=Math.abs(h-4)<0.01&&reason==='semelhanca';msg=!Number.isFinite(h)?'Preencha a altura com um número.':!reason?'Selecione também a ideia matemática que explica a relação.':Math.abs(h-4)>=0.01?'Revise a razão entre a altura e a sombra da haste.':'A conta está certa, mas qual conceito justifica comparar os dois triângulos?';}
+ else{const d=parseNum(el('distance')?.value||'');ok=Math.abs(d-30)<0.01&&Math.abs(h-37.5)<0.01;msg=!Number.isFinite(d)||!Number.isFinite(h)?'Preencha os dois campos com números.':Math.abs(d-30)>=0.01?'A distância precisa começar no centro da base, não na borda. Considere metade dos 24 m.':'A distância horizontal está certa! Agora compare as razões altura/sombra da haste e da pirâmide.'}
+ if(ok){finishMission();return}
+ S.attempts[S.mission]++;save();el('feedback').innerHTML='<div class="alert">'+msg+'</div>';}
+function finishMission(){window.parent.postMessage({type:'mma:mission-complete',chapter:'egito',mission:S.mission},'*');S.status=S.mission===0?'checkpoint':'complete';S.tool=null;save();
+window.MMA_MULTI_LOCK=true;
+window.addEventListener('message', function(ev){
+ if(ev.origin!==location.origin||!ev.data||ev.data.type!=='mma:sync-mission')return;
+ const n=Number(ev.data.mission);
+ if(n!==0&&n!==1)return;
+ if(S.mission!==n||S.status!=='playing'){
+    S.mission=n;S.status='playing';S.tool=null;save();render();closeModal();
+    toast('Missão '+(n+1)+' liberada. Inicie a investigação!');
+ }
+});
+
+render();if(S.status==='checkpoint')showCheckpoint();else showCompletion()}
+function showCheckpoint(){showModal(`<div class="success-symbol">🏺</div><span class="pill">MISSÃO 1 CONCLUÍDA</span><h1>O marco foi medido!</h1><div class="math">Altura do marco: <strong>4 m</strong></div><p>${MISSIONS[0].explanation}</p><p>Agora você está pronto para investigar a pirâmide. A próxima missão terá <strong>quatro pistas</strong> e uma interpretação geométrica extra.</p><div class="actions"><button class="primary" onclick="nextMission()">▶ Ir para a Missão 2</button><button class="secondary" onclick="closeModal();openStudyExplanation()">Rever a explicação</button></div>`,true)}
+function openStudyExplanation(){S.status='checkpoint';showCheckpoint()}
+function nextMission(){if(window.MMA_MULTI_LOCK){toast('Aguarde a liberação do professor.');return;}S.mission=1;S.status='playing';S.tool=null;save();render();closeModal();toast('Missão 2 iniciada. Observe o chão, a pirâmide e a haste de referência.');}
+function showCompletion(){showModal(`<div class="success-symbol">✨</div><span class="pill">CAPÍTULO EGITO • 2/2 MISSÕES</span><h1>Egito restaurado!</h1><p>Você descobriu a altura do marco e interpretou as medidas necessárias para calcular a altura da pirâmide.</p><div class="math">Pirâmide: <strong>37,5 m</strong></div><p>${MISSIONS[1].explanation}</p><p class="subtle">Os conhecimentos de medição ajudaram a restaurar o Egito. Continue a jornada para as terras da Mesopotâmia.</p><div class="actions"><button class="primary" onclick="toast('Capítulo concluído. Aguarde a próxima etapa.')">Seguir para Babilônia →</button><button class="secondary" onclick="closeModal()">Ver o cenário</button></div>`,true)}
+function showHint(){if(S.status!=='playing')return;const n=S.tipCount[S.mission]||0;const tip=M().tips[Math.min(n,M().tips.length-1)];S.tipCount[S.mission]=Math.min(n+1,M().tips.length-1);save();showModal(`<span class="pill">DICA ${Math.min(n+1,M().tips.length)} DE ${M().tips.length}</span><h2>💡 Uma pista para pensar</h2><p>${tip}</p><p class="subtle">Dicas progressivas: a última ajuda com a estratégia, mas a solução continua com você.</p><div class="actions"><button class="primary" onclick="closeModal()">Voltar à investigação</button></div>`)}
+window.addEventListener('keydown',e=>{if(e.key==='Escape'&&S.status==='playing'&&el('screen-shade').classList.contains('visible'))closeModal();if(e.key==='Enter'&&el('answer')&&document.activeElement?.id==='answer')verifyAnswer()});
+render();if(S.status==='playing'){showModal(`<span class="pill">BEM-VINDO DE VOLTA</span><h2>Continue sua investigação</h2><p>Seu progresso na Missão ${S.mission+1} foi recuperado.</p><div class="actions"><button class="primary" onclick="closeModal()">Continuar jogando</button><button class="secondary" onclick="resetGame()">Recomeçar</button></div>`,true)}else if(S.status==='checkpoint'){showCheckpoint()}else if(S.status==='complete'){showCompletion()}else{showIntro()}
+</script>
+</body>
+</html>
