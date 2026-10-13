@@ -1,0 +1,12 @@
+{
+  "name": "misterios-matematica-antiga",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Investigação matemática colaborativa com três equipes",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
